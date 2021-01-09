@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS noteful-folders;
+DROP TABLE IF EXISTS noteful_folders;
