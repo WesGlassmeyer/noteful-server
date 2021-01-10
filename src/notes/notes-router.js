@@ -8,7 +8,7 @@ const jsonParser = express.json();
 
 const serializeNote = (note) => ({
   id: note.id,
-  note_name: xss(note.note_name),
+  name: xss(note.name),
   modified: note.modified,
   folderId: note.folderId,
   content: xss(note.content),
@@ -25,15 +25,15 @@ notesRouter
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { note_name, folderId, content } = req.body;
-    const newNote = { note_name, folderId, content };
+    const { name, folderId, content } = req.body;
+    const newNote = { name, folderId, content };
 
     for (const [key, value] of Object.entries(newNote))
       if (value == null)
         return res.status(400).json({
           error: { message: `Missing '${key}' in request body` },
         });
-    //newNote.note_name = note_name;
+    //newNote.name = name;
     NotesService.insertNote(req.app.get("db"), newNote)
       .then((note) => {
         res
@@ -70,8 +70,8 @@ notesRouter
       .catch(next);
   })
   .patch(jsonParser, (req, res, next) => {
-    const { note_name, folderId, content } = req.body;
-    const noteToUpdate = { note_name, folderId, content };
+    const { name, folderId, content } = req.body;
+    const noteToUpdate = { name, folderId, content };
 
     const numberOfValues = Object.values(noteToUpdate).filter(Boolean).length;
     if (numberOfValues === 0)
