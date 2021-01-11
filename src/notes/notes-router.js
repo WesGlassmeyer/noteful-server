@@ -10,7 +10,7 @@ const serializeNote = (note) => ({
   id: note.id,
   name: xss(note.name),
   modified: note.modified,
-  folderId: note.folderId,
+  folderid: note.folderid,
   content: xss(note.content),
 });
 
@@ -45,9 +45,9 @@ notesRouter
   });
 
 notesRouter
-  .route("/:note_id")
+  .route("/:noteid")
   .all((req, res, next) => {
-    NotesService.getById(req.app.get("db"), req.params.note_id)
+    NotesService.getById(req.app.get("db"), req.params.noteid)
       .then((note) => {
         if (!note) {
           return res.status(404).json({
@@ -63,7 +63,7 @@ notesRouter
     res.json(serializeNote(res.note));
   })
   .delete((req, res, next) => {
-    NotesService.deleteNote(req.app.get("db"), req.params.note_id)
+    NotesService.deleteNote(req.app.get("db"), req.params.noteid)
       .then((numRowsAffected) => {
         res.status(204).end();
       })
@@ -81,7 +81,7 @@ notesRouter
         },
       });
 
-    NotesService.updateNote(req.app.get("db"), req.params.note_id, noteToUpdate)
+    NotesService.updateNote(req.app.get("db"), req.params.noteid, noteToUpdate)
       .then((numRowsAffected) => {
         res.status(204).end();
       })
