@@ -25,8 +25,8 @@ notesRouter
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { name, folderId, content } = req.body;
-    const newNote = { name, folderId, content };
+    const { name, folderid, content } = req.body;
+    const newNote = { name, folderid, content };
 
     for (const [key, value] of Object.entries(newNote))
       if (value == null)
@@ -65,13 +65,13 @@ notesRouter
   .delete((req, res, next) => {
     NotesService.deleteNote(req.app.get("db"), req.params.noteid)
       .then((numRowsAffected) => {
-        res.status(204).end();
+        res.status(204).json({ message: "delete successful" });
       })
       .catch(next);
   })
   .patch(jsonParser, (req, res, next) => {
-    const { name, folderId, content } = req.body;
-    const noteToUpdate = { name, folderId, content };
+    const { name, folderid, content } = req.body;
+    const noteToUpdate = { name, folderid, content };
 
     const numberOfValues = Object.values(noteToUpdate).filter(Boolean).length;
     if (numberOfValues === 0)
